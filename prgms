@@ -299,6 +299,78 @@ public class BankApplication {
 
 
 
+//anopther code
+
+class Mains {
+    private int hour;
+    private int min;
+    private int sec;
+
+    public void time(int hour, int min, int sec) {
+        this.hour = hour;
+        this.min = min;
+        this.sec = sec;
+        System.out.println("Hour: " + hour + ", Minute: " + min + ", Second: " + sec);
+    }
+
+    public void nextSecond() {
+        if (sec == 59) {
+            sec = 0;
+            min=1;
+            hour=1;
+            
+        }
+            
+        else sec++;
+        System.out.println(hour + ":" + min + ":" + sec);
+    }
+
+    public void nextHour() {
+        if (hour == 23) hour = 0;
+        else hour++;
+        System.out.println(hour + ":" + min + ":" + sec);
+    }
+
+    public void nextMin() {
+        if (min == 59) min = 0;
+        else min++;
+        System.out.println(hour + ":" + min + ":" + sec);
+    }
+
+    public void prevSecond() {
+        if (sec == 0) sec = 59;
+        else sec--;
+        System.out.println(hour + ":" + min + ":" + sec);
+    }
+
+    public void prevHour() {
+        if (hour == 0) hour = 23;
+        else hour--;
+        System.out.println(hour + ":" + min + ":" + sec);
+    }
+
+    public void prevMin() {
+        if (min == 0) min = 59;
+        else min--;
+        System.out.println(hour + ":" + min + ":" + sec);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Mains main = new Mains();
+        main.time(23, 59, 59);
+        main.nextSecond();
+        main.nextHour();
+        main.nextMin();
+        main.prevHour();
+        main.prevMin();
+        main.prevSecond();
+    }
+}
+
+
+
 
 
 
