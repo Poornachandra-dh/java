@@ -1,0 +1,306 @@
+//my time code
+public class MyTime {
+    private int hour;
+    private int minute;
+    private int second;
+
+    // Constructor that initializes time by invoking setTime
+    public MyTime(int hour, int minute, int second) {
+        setTime(hour, minute, second);
+    }
+
+    // Method to set time and validate values
+    public void setTime(int hour, int minute, int second) {
+        if (isValidHour(hour) && isValidMinuteOrSecond(minute) && isValidMinuteOrSecond(second)) {
+            this.hour = hour;
+            this.minute = minute;
+            this.second = second;
+        } else {
+            throw new IllegalArgumentException("Invalid hour, minute, or second!");
+        }
+    }
+
+    // Setters with validation
+    public void setHour(int hour) {
+        if (isValidHour(hour)) {
+            this.hour = hour;
+        } else {
+            throw new IllegalArgumentException("Invalid hour!");
+        }
+    }
+
+    public void setMinute(int minute) {
+        if (isValidMinuteOrSecond(minute)) {
+            this.minute = minute;
+        } else {
+            throw new IllegalArgumentException("Invalid minute!");
+        }
+    }
+
+    public void setSecond(int second) {
+        if (isValidMinuteOrSecond(second)) {
+            this.second = second;
+        } else {
+            throw new IllegalArgumentException("Invalid second!");
+        }
+    }
+
+    // Getters
+    public int getHour() {
+        return hour;
+    }
+
+    public int getMinute() {
+        return minute;
+    }
+
+    public int getSecond() {
+        return second;
+    }
+
+    // toString method for displaying time in "HH:MM:SS" format
+    @Override
+    public String toString() {
+        return String.format("%02d:%02d:%02d", hour, minute, second);
+    }
+
+    // Method to increment the time by one second
+    public MyTime nextSecond() {
+        if (++second == 60) {
+            second = 0;
+            if (++minute == 60) {
+                minute = 0;
+                if (++hour == 24) {
+                    hour = 0;
+                }
+            }
+        }
+        return this;
+    }
+
+    // Method to increment the time by one minute
+    public MyTime nextMinute() {
+        if (++minute == 60) {
+            minute = 0;
+            if (++hour == 24) {
+                hour = 0;
+            }
+        }
+        return this;
+    }
+
+    // Method to increment the time by one hour
+    public MyTime nextHour() {
+        if (++hour == 24) {
+            hour = 0;
+        }
+        return this;
+    }
+
+    // Method to decrement the time by one second
+    public MyTime previousSecond() {
+        if (--second == -1) {
+            second = 59;
+            if (--minute == -1) {
+                minute = 59;
+                if (--hour == -1) {
+                    hour = 23;
+                }
+            }
+        }
+        return this;
+    }
+
+    // Method to decrement the time by one minute
+    public MyTime previousMinute() {
+        if (--minute == -1) {
+            minute = 59;
+            if (--hour == -1) {
+                hour = 23;
+            }
+        }
+        return this;
+    }
+
+    // Method to decrement the time by one hour
+    public MyTime previousHour() {
+        if (--hour == -1) {
+            hour = 23;
+        }
+        return this;
+    }
+
+    // Helper methods to check validity
+    private boolean isValidHour(int hour) {
+        return hour >= 0 && hour <= 23;
+    }
+
+    private boolean isValidMinuteOrSecond(int value) {
+        return value >= 0 && value <= 59;
+    }
+}
+
+// Test program
+public class TestMyTime {
+    public static void main(String[] args) {
+        MyTime time = new MyTime(23, 59, 59);
+        System.out.println("Initial time: " + time);
+
+        // Test nextSecond() - should roll over to 00:00:00
+        time.nextSecond();
+        System.out.println("After nextSecond(): " + time);
+
+        // Test nextMinute() and nextHour()
+        time = new MyTime(12, 30, 59);
+        time.nextMinute();
+        System.out.println("After nextMinute(): " + time);
+        time.nextHour();
+        System.out.println("After nextHour(): " + time);
+
+        // Test previousSecond()
+        time = new MyTime(0, 0, 0);
+        time.previousSecond();
+        System.out.println("After previousSecond(): " + time);
+
+        // Test previousMinute() and previousHour()
+        time = new MyTime(1, 0, 0);
+        time.previousMinute();
+        System.out.println("After previousMinute(): " + time);
+        time.previousHour();
+        System.out.println("After previousHour(): " + time);
+
+        // Test setters and getters
+        time.setHour(10);
+        time.setMinute(20);
+        time.setSecond(30);
+        System.out.println("Set time to 10:20:30 -> " + time);
+        System.out.println("Get hour: " + time.getHour());
+        System.out.println("Get minute: " + time.getMinute());
+        System.out.println("Get second: " + time.getSecond());
+
+        // Test invalid values (should throw exceptions)
+        try {
+            time.setTime(24, 0, 0);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Exception: " + e.getMessage());
+        }
+
+        try {
+            time.setHour(25);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Exception: " + e.getMessage());
+        }
+    }
+}
+
+
+
+// account code
+
+class Account {
+    protected String customerName;
+    protected int accountNumber;
+    protected double balance;
+
+    public void setAccountDetails(String customerName, int accountNumber, double openingBalance) {
+        this.customerName = customerName;
+        this.accountNumber = accountNumber;
+        this.balance = openingBalance;
+    }
+
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            System.out.println("Deposited $" + amount + ". Updated balance: $" + balance);
+        } else {
+            System.out.println("Deposit amount must be positive.");
+        }
+    }
+
+    public void displayAccountDetails() {
+        System.out.println("Account Holder: " + customerName);
+        System.out.println("Account Number: " + accountNumber);
+        System.out.println("Balance: $" + balance);
+    }
+}
+
+class SavingAccount extends Account {
+    private double interestRate;
+
+    public void setInterestRate(double interestRate) {
+        this.interestRate = interestRate;
+    }
+
+    public void computeAndDepositInterest() {
+        double interest = balance * (interestRate / 100);
+        balance += interest;
+        System.out.println("Interest of $" + interest + " added at rate " + interestRate + "%. New balance: $" + balance);
+    }
+
+    public void withdraw(double amount) {
+        if (amount <= balance) {
+            balance -= amount;
+            System.out.println("Withdrawn $" + amount + ". Updated balance: $" + balance);
+        } else {
+            System.out.println("Insufficient balance. Withdrawal failed.");
+        }
+    }
+}
+
+class CurrentAccount extends Account {
+    private double minimumBalance;
+    private double serviceCharge;
+
+    public void setMinimumBalanceAndServiceCharge(double minimumBalance, double serviceCharge) {
+        this.minimumBalance = minimumBalance;
+        this.serviceCharge = serviceCharge;
+    }
+
+    public void issueCheque(double amount) {
+        if (amount <= balance) {
+            balance -= amount;
+            System.out.println("Cheque issued for $" + amount + ". Updated balance: $" + balance);
+        } else {
+            System.out.println("Insufficient balance. Cheque issuance failed.");
+        }
+    }
+
+    public void checkMinimumBalance() {
+        if (balance < minimumBalance) {
+            balance -= serviceCharge;
+            System.out.println("Balance below minimum. Service charge of $" + serviceCharge + " applied. New balance: $" + balance);
+        } else {
+            System.out.println("Minimum balance requirement met. No service charge applied.");
+        }
+    }
+}
+
+public class BankApplication {
+    public static void main(String[] args) {
+        SavingAccount savingAccount = new SavingAccount();
+        savingAccount.setAccountDetails("Alice", 1001, 5000);
+        savingAccount.setInterestRate(5.0);
+        savingAccount.deposit(1000);
+        savingAccount.computeAndDepositInterest();
+        savingAccount.withdraw(2000);
+        savingAccount.displayAccountDetails();
+
+        System.out.println();
+
+        CurrentAccount currentAccount = new CurrentAccount();
+        currentAccount.setAccountDetails("Bob", 1002, 3000);
+        currentAccount.setMinimumBalanceAndServiceCharge(1000, 50);
+        currentAccount.deposit(500);
+        currentAccount.issueCheque(1000);
+        currentAccount.checkMinimumBalance();
+        currentAccount.displayAccountDetails();
+    }
+}
+
+
+
+
+
+
+
+
